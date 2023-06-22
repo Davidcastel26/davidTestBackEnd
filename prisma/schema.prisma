@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+
+model Catedratico{
+  idCatedratico String @unique
+  nombreCatedratico String
+  curso Curso[]
+}
+
+model Curso{
+  idCurso String @unique
+  nombreCurso String
+  carrera Carrera @relation(fields: [idCarreras], references: [idCarrera])
+  idCarreras String
+  grado Grado @relation(fields: [ idGrados ], references: [idGrado])
+  idGrados String
+  estudiante Estudiante[]
+  catedratico Catedratico @relation(fields: [catedraticoId], references: [idCatedratico])
+  catedraticoId String
+} 
+
+
+model Estudiante{
+  idEstudiante String @unique
+  nombre String
+  appellido String
+  Nivel String
+  Seccion String
+  curso Curso @relation(fields: [ cursoId ], references: [idCurso])
+  cursoId String
+}
+
+model Carrera{
+  idCarrera String @unique
+  nombreCarrera String
+  curso Curso[]
+}
+
+model Grado{
+  idGrado String @unique
+  nombreGrado String
+  curso Curso[]
+}
+
+
